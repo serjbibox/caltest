@@ -23,7 +23,7 @@ services:
     ports:
       - "5232:5232"    
     init: true
-    read_only: true
+    read_only: false
     security_opt:
       - no-new-privileges:true
     cap_drop:
