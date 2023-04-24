@@ -1,0 +1,44 @@
+version: "2"
+
+services:
+  agendav:
+    image: ghcr.io/nagimov/agendav-docker:latest
+    container_name: agendav
+    environment:
+      - AGENDAV_SERVER_NAME=agendav
+      - AGENDAV_TITLE=Welcome to Example Agendav Server
+      - AGENDAV_FOOTER=Hosted by Example Company
+      - AGENDAV_ENC_KEY=my_encrypt10n_k3y
+      - AGENDAV_CALDAV_SERVER=http://radicale:5232
+      - AGENDAV_CALDAV_PUBLIC_URL=http://radicale:5232
+      - AGENDAV_TIMEZONE=UTC
+      - AGENDAV_LANG=ru
+      - AGENDAV_LOG_DIR=/tmp/
+    ports:
+      - "8080:8080"
+
+  radicale:
+    image: tomsquest/docker-radicale:3.1.8.2
+    container_name: radicale
+    ports:
+      - "5232:5232"    
+    init: true
+    read_only: true
+    command: python3 -m pip install --upgrade radicale[bcrypt]==2.1.*
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    healthcheck:
+      test: curl -f http://radicale:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+      - ./config:/config
