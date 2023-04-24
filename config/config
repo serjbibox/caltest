@@ -64,7 +64,7 @@ htpasswd_filename = /config/users
 # Value: plain | bcrypt | md5
 # bcrypt requires the installation of radicale[bcrypt].
 #htpasswd_encryption = md5
-htpasswd_encryption = bcrypt
+htpasswd_encryption = plain
 
 # Incorrect authentication delay (seconds)
 #delay = 1
