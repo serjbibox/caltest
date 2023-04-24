@@ -24,6 +24,7 @@ services:
       - "5232:5232"    
     init: true
     read_only: false
+    command: python3 -m pip install --upgrade radicale[bcrypt]==2.1.*
     security_opt:
       - no-new-privileges:true
     cap_drop:
